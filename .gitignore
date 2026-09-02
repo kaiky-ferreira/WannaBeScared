@@ -1,0 +1,17 @@
+.vscode/
+.idea/
+
+client/node_modules/
+client/dist/
+client/.env
+
+server/.venv/
+server/.env
+server/__pycache__/
+server/app/__pycache__/
+server/app/**/*.pyc
+
+*.pyc
+*.log
+*.sqlite3
+.DS_Store
