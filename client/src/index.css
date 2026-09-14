@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@theme {
+    --font-display: "Shlop", "Impact", fantasy;
+    --color-palette-main: #F1E6D0;
+    --color-palette-wine: #57031A;
+    --color-palette-bruise: #3D0818;
+    --color-palette-dark: #290610;
+    --color-palette-black: #120408;
+    --color-palette-muted: #C7B8B2;
+    --color-palette-white: #ffffff;
+    --color-palette-black-true: #000000;
+    --color-palette-bone: #F1E6D0;
+    --color-palette-ash: #C7B8B2;
+    --color-palette-ash: #C7B8B2;
+    --color-palette-faded: #B94A5A;
+}
+
+:root {
+    --blood: #78001B;
+    --wine: #57031A;
+    --bruise: #3D0818;
+    --dark-red: #290610;
+    --black-red: #120408;
+    --bone: #F1E6D0;
+    --ash: #C7B8B2;
+    --faded-red: #B94A5A;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background-color: var(--black-red);
+    background-image:
+        linear-gradient(rgba(61, 8, 24, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61, 8, 24, 0.14) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, var(--bruise) 0, var(--black-red) 48rem);
+    background-size: 4px 4px, 4px 4px, auto;
+    color: #ffffff;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+body::before {
+    position: fixed;
+    z-index: 60;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.045;
+    background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, var(--bruise) 3px, transparent 4px);
+    content: "";
+}
+
+button,
+a,
+select {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--blood);
+    outline-offset: 3px;
+}
