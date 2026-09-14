@@ -2,11 +2,11 @@ from collections.abc import Sequence
 
 SUBGENRES: dict[str, Sequence[str]] = {
     "classics": [],
-    "slasher": ["slasher"],
-    "psychological": ["psychological horror"],
-    "found-footage": ["found footage"],
-    "paranormal": ["paranormal"],
-    "gore": ["gore"],
+    "slasher": ["slasher", "slasher film"],
+    "psychological": ["psychological horror", "psychological thriller"],
+    "found-footage": ["found footage", "found footage film"],
+    "paranormal": ["paranormal", "paranormal horror"],
+    "gore": ["gore", "splatter"],
 }
 
 

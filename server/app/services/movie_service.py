@@ -38,9 +38,8 @@ async def _resolve_keyword_ids(
             ),
             None,
         )
-        chosen_result = exact_match or results[0]
-
-        keyword_ids.append(chosen_result["id"])
+        if exact_match:
+            keyword_ids.append(exact_match["id"])
 
     return keyword_ids
 
@@ -50,6 +49,7 @@ async def get_movies(
     page: int = 1,
     subgenre: str | None = None,
     keyword: str | None = None,
+    sort_by: str = "popular",
 ):
     if TMDB_KEY is None:
         raise HTTPException(
@@ -60,9 +60,16 @@ async def get_movies(
     params = {
         "api_key": TMDB_KEY,
         "language": "en-US",
-        "sort_by": "primary_release_date.desc",
+        "sort_by": {
+            "popular": "vote_average.desc",
+            "newest": "primary_release_date.desc",
+            "oldest": "primary_release_date.asc",
+            "title": "original_title.asc",
+        }.get(sort_by, "vote_average.desc"),
         "vote_average.gte": minimum_score,
         "with_genres": 27,
+        "without_genres": 10402,
+        "with_runtime.gte": 60,
         "vote_count.gte": 100,
         "page": page,
     }
@@ -80,7 +87,8 @@ async def get_movies(
             )
         if normalized_subgenre == "classics":
             params["primary_release_date.lte"] = "1999-12-31"
-            params["sort_by"] = "vote_average.desc"
+            if sort_by == "popular":
+                params["sort_by"] = "vote_average.desc"
 
         keyword_queries.extend(subgenre_keywords)
 
@@ -93,12 +101,19 @@ async def get_movies(
             keyword_ids = await _resolve_keyword_ids(client, keyword_queries)
 
             if keyword_ids:
-                params["with_keywords"] = ",".join(str(keyword_id) for keyword_id in keyword_ids)
+                params["with_keywords"] = str(keyword_ids[0])
             else:
-                raise HTTPException(
-                    status_code=400,
-                    detail="No TMDB keywords matched the requested filter",
-                )
+                return {
+                    "movies": [],
+                    "page": page,
+                    "total_pages": 1,
+                    "filters": {
+                        "minimum_score": minimum_score,
+                        "page": page,
+                        "subgenre": subgenre,
+                        "keyword": keyword.strip() if keyword else None,
+                    },
+                }
 
         response = await client.get(
             "/discover/movie",

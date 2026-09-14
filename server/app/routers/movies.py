@@ -12,12 +12,14 @@ async def get_movies_route(
     minimum_score: int = Query(5, ge=0, le=10),
     page: int = Query(1, ge=1),
     subgenre: str | None = Query(None),
-    keyword: str | None = Query(None)
+    keyword: str | None = Query(None),
+    sort_by: str = Query("popular", pattern="^(popular|newest|oldest|title)$"),
     ):
 
         return await get_movies(
             minimum_score=minimum_score,
             page=page,
             subgenre=subgenre,
-            keyword=keyword
+            keyword=keyword,
+            sort_by=sort_by,
         )
