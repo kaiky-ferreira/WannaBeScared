@@ -37,11 +37,11 @@ export default function FilterBar({
             className="mt-2 w-full border-2 border-[inset_#57031A] bg-black px-3 py-2 text-sm normal-case tracking-normal text-palette-bone outline-none transition [border-style:inset] hover:border-palette-main focus:border-palette-main focus:ring-2 focus:ring-palette-main/20"
           >
             <option value="0">Any rating</option>
-            <option value="5">1 skull or more</option>
-            <option value="6">2 skulls or more</option>
-            <option value="7">3 skulls or more</option>
-            <option value="8">4 skulls or more</option>
-            <option value="9">5 skulls</option>
+            <option value="1">1 skull</option>
+            <option value="2">2 skulls</option>
+            <option value="3">3 skulls</option>
+            <option value="4">4 skulls</option>
+            <option value="5">5 skulls</option>
           </select>
         </label>
         <label

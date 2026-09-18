@@ -45,7 +45,7 @@ async def _resolve_keyword_ids(
 
 
 async def get_movies(
-    minimum_score: int = 5,
+    minimum_score: int = 1,
     page: int = 1,
     subgenre: str | None = None,
     keyword: str | None = None,
@@ -66,7 +66,10 @@ async def get_movies(
             "oldest": "primary_release_date.asc",
             "title": "original_title.asc",
         }.get(sort_by, "vote_average.desc"),
-        "vote_average.gte": minimum_score,
+        "vote_average.gte": minimum_score * 2 if minimum_score else 0,
+        "vote_average.lte": min((minimum_score + 0.9) * 2, 10)
+        if minimum_score
+        else 10,
         "with_genres": 27,
         "without_genres": 10402,
         "with_runtime.gte": 60,

@@ -14,7 +14,7 @@ export default function Movies() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [minimumScore, setMinimumScore] = useState(5);
+  const [minimumScore, setMinimumScore] = useState(1);
   const [subgenre, setSubgenre] = useState(urlSubgenre ?? "");
   const [sortBy, setSortBy] = useState(urlSort ?? "popular");
   const loadMoreRef = useRef<HTMLDivElement | null>(null);

@@ -45,8 +45,12 @@ async def search_movies(query: str, page: int = 1):
 
 		data = response.json()
 
+	horror_movies = [
+		movie for movie in data.get("results", []) if 27 in movie.get("genre_ids", [])
+	]
+
 	return {
-		"movies": data.get("results", []),
+		"movies": horror_movies,
 		"page": data.get("page", page),
 		"total_pages": data.get("total_pages", 1),
 		"query": cleaned_query,

@@ -9,7 +9,7 @@ router = APIRouter(
 
 @router.get("", response_model=MovieResponse)
 async def get_movies_route(
-    minimum_score: int = Query(5, ge=0, le=10),
+    minimum_score: int = Query(1, ge=0, le=5),
     page: int = Query(1, ge=1),
     subgenre: str | None = Query(None),
     keyword: str | None = Query(None),
