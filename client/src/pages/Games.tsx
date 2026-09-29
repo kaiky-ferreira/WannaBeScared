@@ -10,7 +10,7 @@ export default function Games() {
           "Got a selection of good things on sale stranger!"
         </p>
         <p className="mx-auto my-3 max-w-md font-serif leading-7 text-palette-ash">
-          Our horror game shelf is being assembled. Check back soon.
+          The horror game shelf is being assembled. Check back soon.
         </p>
       </div>
     </section>

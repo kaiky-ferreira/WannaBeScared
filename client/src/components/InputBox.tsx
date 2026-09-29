@@ -2,12 +2,14 @@ interface InputBoxProps {
   value: string;
   onValueChange: (value: string) => void;
   onSubmit: () => void;
+  onFocus?: () => void;
 }
 
 export default function InputBox({
   value,
   onValueChange,
   onSubmit,
+  onFocus,
 }: InputBoxProps) {
   return (
     <form
@@ -24,6 +26,7 @@ export default function InputBox({
         type="search"
         value={value}
         onChange={(event) => onValueChange(event.target.value)}
+        onFocus={onFocus}
         aria-label="Search movies"
         placeholder="Search movies..."
         className="min-w-0 flex-1 bg-transparent text-sm text-palette-bone placeholder:text-palette-muted focus:outline-none"

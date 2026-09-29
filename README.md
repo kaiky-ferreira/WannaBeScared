@@ -6,25 +6,32 @@ Ever wanted a good scare but spent an hour scrolling through streaming apps find
 
 **(The site ISN'T a screamer)**
 
-
 ## URL
+
 [https://wannabescared.vercel.app/](https://wannabescared.vercel.app/)
 
+## VERSION 1.1 OUT NOW!!
+
+- Added responsivity to mobile devices
+- Added quality of life updates
+
 ## Tech Stack
+
 - **Front-end:** React + TypeScript, TailwindCSS
 - **Back-end:** Python + FastAPI
 - **Data:** The Movie Database (TMDB) API
 
-
 ## Want to mess with the code?
 
 **1. Clone the repo**
+
 ```bash
 git clone https://github.com/kaiky-ferreira/WannaBeScared.git
 cd WannaBeScared
 ```
 
 **2. Set up the back-end**
+
 ```bash
 cd server
 python -m venv .venv
@@ -39,12 +46,14 @@ pip install -r requirements.txt
 ```
 
 **3. Set up the front-end**
+
 ```bash
 cd ../client
 npm install
 ```
 
 **4. Create a .env file inside the server folder and drop your TMDB API key there:**
+
 ```bash
 VITE_TMDB_API_KEY=your_key
 ```
@@ -52,12 +61,14 @@ VITE_TMDB_API_KEY=your_key
 **5. Split terminals and spin it up**
 
 Terminal 1
+
 ```bash (
 cd server/app
 fastapi dev
 ```
 
 Terminal 2
+
 ```bash (
 cd client
 npm run dev

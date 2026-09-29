@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import InputBox from "./InputBox";
 import MovieModal from "./movie/MovieModal";
 import type { Movie } from "../types/movie";
 import { searchMovies } from "../services/searchService";
+import loadingGif from "../assets/Loading.gif";
 
 const Navbar = () => {
+  const { pathname } = useLocation();
+  const showSearch = pathname === "/movies";
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
@@ -17,6 +20,12 @@ const Navbar = () => {
       setSelectedMovie(results[0]);
       setIsOpen(false);
       return;
+    }
+  };
+
+  const handleSearchFocus = () => {
+    if (query.trim()) {
+      setIsOpen(true);
     }
   };
 
@@ -40,6 +49,7 @@ const Navbar = () => {
     const timeoutId = window.setTimeout(() => {
       const loadMovies = async () => {
         setLoading(true);
+        setIsOpen(true);
 
         try {
           const data = await searchMovies(term);
@@ -94,8 +104,8 @@ const Navbar = () => {
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 border-b-[3px] border-palette-wine bg-palette-dark px-3 py-2 shadow-[0_2px_0_#120408,0_5px_0_rgba(18,4,8,0.8)] sm:px-6">
-      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-2">
-        <div className="flex justify-self-start gap-1 font-mono text-sm sm:gap-2 sm:text-base">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-2 sm:grid-cols-[1fr_auto_1fr]">
+        <div className="flex min-w-0 max-w-full gap-1 overflow-x-auto font-mono text-sm sm:gap-2 sm:text-base">
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -121,51 +131,59 @@ const Navbar = () => {
             GAMES
           </NavLink>
         </div>
-        <div className="relative w-[min(30vw,20rem)] min-w-0 justify-self-end sm:w-[min(34vw,20rem)]">
-          <div className="relative w-full">
-            <InputBox
-              value={query}
-              onValueChange={setQuery}
-              onSubmit={handleSearch}
-            />
+        {showSearch && (
+          <div className="relative w-full min-w-0 sm:col-start-3 sm:w-[min(34vw,20rem)] sm:justify-self-end">
+            <div className="relative w-full">
+              <InputBox
+                value={query}
+                onValueChange={setQuery}
+                onSubmit={handleSearch}
+                onFocus={handleSearchFocus}
+              />
 
-            {isOpen && query.trim() && (
-              <div className="absolute left-0 right-0 top-full mt-1 overflow-hidden border-2 border-palette-wine bg-palette-dark shadow-[4px_4px_0_#120408]">
-                {loading && (
-                  <div className="px-4 py-3 text-sm text-palette-muted">
-                    Searching...
-                  </div>
-                )}
+              {isOpen && query.trim() && (
+                <div className="absolute left-0 right-0 top-full mt-1 overflow-hidden border-2 border-palette-wine bg-palette-dark shadow-[4px_4px_0_#120408]">
+                  {loading && (
+                    <div className="flex items-center gap-3 px-4 py-3 text-sm text-palette-muted">
+                      <img
+                        src={loadingGif}
+                        alt="Searching movies"
+                        className="h-7 w-7"
+                      />
+                      <span>Searching...</span>
+                    </div>
+                  )}
 
-                {!loading && results.length === 0 && (
-                  <div className="px-4 py-3 text-sm text-palette-muted">
-                    No results found
-                  </div>
-                )}
+                  {!loading && results.length === 0 && (
+                    <div className="px-4 py-3 text-sm text-palette-muted">
+                      No results found
+                    </div>
+                  )}
 
-                {!loading &&
-                  results.map((movie) => (
-                    <button
-                      key={movie.id}
-                      type="button"
-                      className="flex w-full items-center gap-3 border-b border-dotted border-palette-wine px-4 py-3 text-left text-palette-bone hover:bg-palette-wine"
-                      onClick={() => {
-                        setSelectedMovie(movie);
-                        setIsOpen(false);
-                      }}
-                    >
-                      <span className="text-palette-bone">{movie.title}</span>
-                      {movie.release_date && (
-                        <span className="text-sm text-palette-muted">
-                          {movie.release_date.slice(0, 4)}
-                        </span>
-                      )}
-                    </button>
-                  ))}
-              </div>
-            )}
+                  {!loading &&
+                    results.map((movie) => (
+                      <button
+                        key={movie.id}
+                        type="button"
+                        className="flex w-full items-center gap-3 border-b border-dotted border-palette-wine px-4 py-3 text-left text-palette-bone hover:bg-palette-wine"
+                        onClick={() => {
+                          setSelectedMovie(movie);
+                          setIsOpen(false);
+                        }}
+                      >
+                        <span className="text-palette-bone">{movie.title}</span>
+                        {movie.release_date && (
+                          <span className="text-sm text-palette-muted">
+                            {movie.release_date.slice(0, 4)}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {selectedMovie && (
         <MovieModal

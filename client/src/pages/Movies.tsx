@@ -5,6 +5,7 @@ import MovieCard from "../components/movie/MovieCard";
 import FilterBar from "../components/movie/FilterBar";
 import MovieModal from "../components/movie/MovieModal";
 import { useSearchParams } from "react-router-dom";
+import loadingGif from "../assets/Loading.gif";
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,7 +15,7 @@ export default function Movies() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [minimumScore, setMinimumScore] = useState(1);
+  const [minimumScore, setMinimumScore] = useState(0);
   const [subgenre, setSubgenre] = useState(urlSubgenre ?? "");
   const [sortBy, setSortBy] = useState(urlSort ?? "popular");
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -158,7 +159,7 @@ export default function Movies() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-24 sm:px-6 md:pt-28">
+    <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-28 sm:px-6 sm:pt-24 md:pt-28">
       <div className="mb-6 border border-palette-wine border-l-[5px] border-l-palette-wine bg-palette-dark px-5 py-4 shadow-[3px_3px_0_#120408]">
         <h1 className="font-display text-4xl text-palette-bone sm:text-6xl">
           MOVIES
@@ -175,15 +176,35 @@ export default function Movies() {
           onReset={resetFilters}
         />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 xl:grid-cols-4">
-          {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              onClick={() => setSelectedMovie(movie)}
-            />
-          ))}
+          {loading && movies.length === 0 ? (
+            <div className="col-span-full flex min-h-56 items-center justify-center">
+              <img
+                src={loadingGif}
+                alt="Loading movies"
+                className="h-14 w-14"
+              />
+            </div>
+          ) : (
+            movies.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                movie={movie}
+                onClick={() => setSelectedMovie(movie)}
+              />
+            ))
+          )}
         </div>
       </div>
+
+      {loading && movies.length > 0 && (
+        <div className="flex justify-center py-8">
+          <img
+            src={loadingGif}
+            alt="Loading more movies"
+            className="h-12 w-12"
+          />
+        </div>
+      )}
 
       <div ref={loadMoreRef} />
 
